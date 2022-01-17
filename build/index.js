@@ -30,7 +30,8 @@ exports.default = (0, architect_1.createBuilder)((options, context) => {
             watch: false,
         }).resolve.then((result) => {
             console.log(`Build has been finished: ${options.outputPath}`);
-        });
+            resolve(result);
+        }).catch((err) => reject(err));
         context.reportStatus(`Started.`);
     });
 });
