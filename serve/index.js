@@ -1,9 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const architect_1 = require("@angular-devkit/architect");
-const yargs = require("yargs");
-const helpers = require("yargs/helpers");
-const argv = yargs(helpers.hideBin(process.argv)).argv;
+const yargs_1 = __importDefault(require("yargs/yargs"));
+const helpers_1 = __importDefault(require("yargs/helpers"));
+const argv = (0, yargs_1.default)(helpers_1.default.hideBin(process.argv)).argv;
 const NgcEsbuild = require('ngc-esbuild');
 const defaultOptions = {
     main: "src/main.ts",
@@ -19,12 +22,12 @@ exports.default = (0, architect_1.createBuilder)((options, context) => {
         // console.log('ARGV: ', argv);
         const builder = new NgcEsbuild({
             main: options.main,
-            outpath: options.outputPath,
             minify: Boolean(options.outputHashing),
             open: true,
+            outpath: options.outputPath,
             port: 4200,
-            sourcemap: true,
             serve: true,
+            sourcemap: true,
             watch: true,
         });
         context.reportStatus(`Started.`);

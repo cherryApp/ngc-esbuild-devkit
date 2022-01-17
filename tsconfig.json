@@ -16,6 +16,7 @@
     "sourceMap": false,
     "strictNullChecks": true,
     "types": ["node", "jasmine"],
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "esModuleInterop": true,
   }
 }
