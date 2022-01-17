@@ -46,8 +46,9 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
     }).resolve.then(
       (result: any) => {
         console.log(`Build has been finished: ${options.outputPath}`);
+        resolve(result);
       }
-    );
+    ).catch( (err: any) => reject(err) );
 
     context.reportStatus(`Started.`);
   });
