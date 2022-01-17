@@ -20,15 +20,17 @@ exports.default = (0, architect_1.createBuilder)((options, context) => {
         // console.log('OPTIONS: ', options);
         options = Object.assign(Object.assign({}, defaultOptions), options);
         // console.log('ARGV: ', argv);
-        const builder = new NgcEsbuild({
-            main: options.main,
-            minify: Boolean(options.outputHashing),
+        new NgcEsbuild({
+            bundle: true,
+            main: [options.main],
+            minify: false,
             open: true,
             outpath: options.outputPath,
             port: 4200,
             serve: true,
             sourcemap: true,
             watch: true,
+            format: 'esm',
         });
         context.reportStatus(`Started.`);
     });

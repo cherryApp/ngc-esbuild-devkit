@@ -9,6 +9,11 @@
       "implementation": "./serve",
       "schema": "./serve/schema.json",
       "description": "Runs an EsBuild builder for browsers"
+    },
+    "test": {
+      "implementation": "./test",
+      "schema": "./test/schema.json",
+      "description": "Testing Angular with Esbuild and Jest"
     }
   }
 }
