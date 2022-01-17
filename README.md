@@ -1,2 +1,1 @@
-# ngc-esbuild-devkit
-Angular Builders with Esbuild
+# Angular Native Builders with Esbuild
