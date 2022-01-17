@@ -1,7 +1,7 @@
 import { BuilderContext, BuilderOutput, createBuilder } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
-import * as yargs from 'yargs';
-import * as helpers from 'yargs/helpers';
+import yargs from 'yargs/yargs';
+import helpers from 'yargs/helpers';
 const argv = yargs(helpers.hideBin(process.argv)).argv;
 const NgcEsbuild = require('ngc-esbuild');
 
