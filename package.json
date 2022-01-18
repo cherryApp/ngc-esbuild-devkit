@@ -6,6 +6,7 @@
   "builders": "builders.json",
   "scripts": {
     "build": "tsc",
+    "patch": "git add . && git commit -m \"patch\" && npm version patch && git push && npm publish",
     "test": "ts-node node_modules/jasmine/bin/jasmine command/index_spec.ts"
   },
   "keywords": [],

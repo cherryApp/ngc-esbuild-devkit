@@ -96,7 +96,7 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
     const tsConfig = await loadConfig(options.tsConfig);
     options.main = [...(await processGlobPatterns(tsConfig))];
     
-    new NgcEsbuild({
+    new NgcEsbuild({ 
       bundle: true,
       main: options.main,
       minify: false,
