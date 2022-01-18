@@ -4,28 +4,44 @@ import yargs from 'yargs/yargs';
 import helpers from 'yargs/helpers';
 const argv = yargs(helpers.hideBin(process.argv)).argv;
 const NgcEsbuild = require('ngc-esbuild');
-const fsp = require('fs').promises;
+const fs = require('fs');
+const fsp = fs.promises;
 const glob = require('glob');
+const path = require('path');
+var globToRegExp = require('glob-to-regexp');
 
 import { runCLI } from 'jest';
 
-interface AngularBuilderOptions extends JsonObject {
+interface AngularTestBuilderOptions extends JsonObject {
   [key: string]: any;
-  outputPath: string;
-  index: string;
-  main: string[];
-  polyfills?: string;
-  tsConfig?: string;
-  inlineStyleLanguage?: string;
   assets?: string[];
-  styles?: string[];
-  scripts?: string[],
+  browsers?: undefined,
   budgets?: { type: string, maximumWarning: string, maximumError: string }[];
+  codeCoverage?: false,
+  codeCoverageExclude?: [],
   fileReplacements?: { replace: string, with: string }[];
+  include?: [],
+  index?: string;
+  inlineStyleLanguage?: string;
+  karmaConfig?: string;
+  main: string[];
   outputHashing?: string,
+  outputPath?: string;
+  poll?: undefined,
+  polyfills?: string;
+  preserveSymlinks?: undefined,
+  progress?: true,
+  reporters?: [],
+  scripts?: string[],
+  sourceMap?: true,
+  stylePreprocessorOptions?: { includePaths: [] },
+  styles?: string[];
+  tsConfig?: string;
+  watch?: undefined,
+  webWorkerTsConfig?: undefined
 }
 
-const defaultOptions: AngularBuilderOptions = {
+const defaultOptions: AngularTestBuilderOptions = {
   main: ["src/test.ts"],
   outputPath: "dist/.jest",
   index: "src/index.html",
@@ -89,12 +105,30 @@ const jestRunner = async () => {
   await runCLI(jestConfig as any, [projectRootPath]);
 };
 
-export default createBuilder<AngularBuilderOptions>((options, context) => {
-  return new Promise<BuilderOutput>( async (resolve, reject) => {
-    options = { ...defaultOptions, ...options };
+const processOptions = async (
+  options: AngularTestBuilderOptions,
+): Promise<AngularTestBuilderOptions> => {
+  const _options = { ...defaultOptions, ...options };
 
-    const tsConfig = await loadConfig(options.tsConfig);
-    options.main = [...(await processGlobPatterns(tsConfig))];
+  const tsConfig = await loadConfig(_options.tsConfig);
+  let files: string[] = await processGlobPatterns(tsConfig);
+  if (Array.isArray(_options.include)) {
+    for (const includeGlob of _options.include) {
+      const re = globToRegExp(includeGlob);  
+      files = files.filter( file => re.test(file) );
+    }
+  }
+
+  _options.main = [...(files)];
+  return _options;
+};
+
+export default createBuilder<AngularTestBuilderOptions>((options, context) => {
+  return new Promise<BuilderOutput>( async (resolve, reject) => {
+
+    options = await processOptions(options);  
+    
+    fs.rmSync(path.join(process.cwd(), '/.jest'), {recursive: true, force: true});
     
     new NgcEsbuild({ 
       bundle: true,
@@ -109,7 +143,7 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
       format: 'iife',
       tsconfig: options.tsConfig,
     }).resolve.then( async () => {
-      console.log('Starting Jest ...');
+  
       await jestRunner();
       resolve({ success: true, path: '' });
     });

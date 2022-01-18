@@ -17,8 +17,11 @@ const yargs_1 = __importDefault(require("yargs/yargs"));
 const helpers_1 = __importDefault(require("yargs/helpers"));
 const argv = (0, yargs_1.default)(helpers_1.default.hideBin(process.argv)).argv;
 const NgcEsbuild = require('ngc-esbuild');
-const fsp = require('fs').promises;
+const fs = require('fs');
+const fsp = fs.promises;
 const glob = require('glob');
+const path = require('path');
+var globToRegExp = require('glob-to-regexp');
 const jest_1 = require("jest");
 const defaultOptions = {
     main: ["src/test.ts"],
@@ -70,11 +73,23 @@ const jestRunner = () => __awaiter(void 0, void 0, void 0, function* () {
     // Run the Jest asynchronously
     yield (0, jest_1.runCLI)(jestConfig, [projectRootPath]);
 });
+const processOptions = (options) => __awaiter(void 0, void 0, void 0, function* () {
+    const _options = Object.assign(Object.assign({}, defaultOptions), options);
+    const tsConfig = yield loadConfig(_options.tsConfig);
+    let files = yield processGlobPatterns(tsConfig);
+    if (Array.isArray(_options.include)) {
+        for (const includeGlob of _options.include) {
+            const re = globToRegExp(includeGlob);
+            files = files.filter(file => re.test(file));
+        }
+    }
+    _options.main = [...(files)];
+    return _options;
+});
 exports.default = (0, architect_1.createBuilder)((options, context) => {
     return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
-        options = Object.assign(Object.assign({}, defaultOptions), options);
-        const tsConfig = yield loadConfig(options.tsConfig);
-        options.main = [...(yield processGlobPatterns(tsConfig))];
+        options = yield processOptions(options);
+        fs.rmSync(path.join(process.cwd(), '/.jest'), { recursive: true, force: true });
         new NgcEsbuild({
             bundle: true,
             main: options.main,
@@ -88,7 +103,6 @@ exports.default = (0, architect_1.createBuilder)((options, context) => {
             format: 'iife',
             tsconfig: options.tsConfig,
         }).resolve.then(() => __awaiter(void 0, void 0, void 0, function* () {
-            console.log('Starting Jest ...');
             yield jestRunner();
             resolve({ success: true, path: '' });
         }));
