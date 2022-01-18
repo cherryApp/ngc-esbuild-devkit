@@ -91,7 +91,6 @@ const jestRunner = async () => {
 
 export default createBuilder<AngularBuilderOptions>((options, context) => {
   return new Promise<BuilderOutput>( async (resolve, reject) => {
-    console.log('OPTIONS: ', options);
     options = { ...defaultOptions, ...options };
 
     const tsConfig = await loadConfig(options.tsConfig);

@@ -41,7 +41,6 @@ const getDirectories = (src) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 return reject(err);
             }
-            console.log('GLOBFN: ', list);
             resolve(list);
         });
     });
@@ -56,9 +55,7 @@ const processGlobPatterns = (tsConfig) => __awaiter(void 0, void 0, void 0, func
     for (const globalPath of tsConfig.include) {
         getDirs.push(getDirectories(globalPath));
     }
-    console.log('getDirs: ', getDirs);
     const dirLists = yield Promise.all(getDirs);
-    console.log('dirLists: ', tsConfig);
     list.push(...dirLists.flat());
     return list;
 });
@@ -75,13 +72,9 @@ const jestRunner = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.default = (0, architect_1.createBuilder)((options, context) => {
     return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('OPTIONS: ', options);
         options = Object.assign(Object.assign({}, defaultOptions), options);
-        // console.log('ARGV: ', argv);
         const tsConfig = yield loadConfig(options.tsConfig);
-        // options.main = !Array.isArray(options.main) ? [options.main] : options.main;
         options.main = [...(yield processGlobPatterns(tsConfig))];
-        console.log(options.main);
         new NgcEsbuild({
             bundle: true,
             main: options.main,
