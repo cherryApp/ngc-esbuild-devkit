@@ -49,7 +49,7 @@ const getDirectories = async (src: string): Promise<string[]> => {
       if (err) {
         return reject(err);
       }
-      console.log('GLOBFN: ', list);
+
       resolve(list);
     });
   });
@@ -67,10 +67,8 @@ const processGlobPatterns = async (tsConfig?: {include?: string[]}): Promise<str
   for (const globalPath of tsConfig.include) {
     getDirs.push( getDirectories(globalPath) );
   }
-  console.log('getDirs: ', getDirs);
   
   const dirLists = await Promise.all(getDirs);
-  console.log('dirLists: ', tsConfig);
   list.push( ...dirLists.flat() );
 
   return list;
@@ -95,12 +93,9 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
   return new Promise<BuilderOutput>( async (resolve, reject) => {
     console.log('OPTIONS: ', options);
     options = { ...defaultOptions, ...options };
-    // console.log('ARGV: ', argv);
 
     const tsConfig = await loadConfig(options.tsConfig);
-    // options.main = !Array.isArray(options.main) ? [options.main] : options.main;
     options.main = [...(await processGlobPatterns(tsConfig))];
-    console.log(options.main);
     
     new NgcEsbuild({
       bundle: true,
