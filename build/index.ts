@@ -31,9 +31,7 @@ const defaultOptions: AngularBuilderOptions = {
 
 export default createBuilder<AngularBuilderOptions>((options, context) => {
   return new Promise<BuilderOutput>((resolve, reject) => {
-    console.log('OPTIONS: ', options);
     options = {...defaultOptions, ...options};
-    // console.log('ARGV: ', argv);
 
     new NgcEsbuild({
       bundle: true,

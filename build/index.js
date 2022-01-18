@@ -17,9 +17,7 @@ const defaultOptions = {
 };
 exports.default = (0, architect_1.createBuilder)((options, context) => {
     return new Promise((resolve, reject) => {
-        console.log('OPTIONS: ', options);
         options = Object.assign(Object.assign({}, defaultOptions), options);
-        // console.log('ARGV: ', argv);
         new NgcEsbuild({
             bundle: true,
             main: [options.main],

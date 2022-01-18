@@ -28,7 +28,7 @@
     "glob": "^7.2.0",
     "jest": "^27.4.7",
     "jest-cli": "^27.4.7",
-    "ngc-esbuild": "^0.0.53",
+    "ngc-esbuild": "file://H:/Nt/ngc-esbuild",
     "yargs": "^17.3.1"
   }
 }

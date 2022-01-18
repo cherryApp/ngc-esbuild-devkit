@@ -84,6 +84,7 @@ const jestRunner = async () => {
   const jestConfig: any = {
     roots: ['./.jest'],
     passWithNoTests: true,
+    testEnvironment: 'jsdom',
   };
 
   // Run the Jest asynchronously
@@ -97,21 +98,21 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
     // console.log('ARGV: ', argv);
 
     const tsConfig = await loadConfig(options.tsConfig);
-    options.main = !Array.isArray(options.main) ? [options.main] : options.main;
-    options.main = [...options.main, ...(await processGlobPatterns(tsConfig))];
+    // options.main = !Array.isArray(options.main) ? [options.main] : options.main;
+    options.main = [...(await processGlobPatterns(tsConfig))];
     console.log(options.main);
     
     new NgcEsbuild({
-      bundle: false,
-      main: ['src/app/app.component.spec.ts'],
+      bundle: true,
+      main: options.main,
       minify: false,
       open: false,
       outpath: '/.jest/',
       port: 4200,
       serve: false,
-      sourcemap: true,
+      sourcemap: false,
       watch: false,
-      format: 'cjs',
+      format: 'iife',
       tsconfig: options.tsConfig,
     }).resolve.then( async () => {
       console.log('Starting Jest ...');
