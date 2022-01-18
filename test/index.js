@@ -69,6 +69,7 @@ const jestRunner = () => __awaiter(void 0, void 0, void 0, function* () {
         roots: ['./.jest'],
         passWithNoTests: true,
         testEnvironment: 'jsdom',
+        maxWorkers: '50%'
     };
     // Run the Jest asynchronously
     yield (0, jest_1.runCLI)(jestConfig, [projectRootPath]);

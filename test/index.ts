@@ -99,6 +99,7 @@ const jestRunner = async () => {
     roots: ['./.jest'],
     passWithNoTests: true,
     testEnvironment: 'jsdom',
+    maxWorkers: '50%'
   };
 
   // Run the Jest asynchronously
