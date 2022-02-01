@@ -133,7 +133,7 @@ export default createBuilder<AngularTestBuilderOptions>((options, context) => {
     
     new NgcEsbuild({ 
       bundle: true,
-      main: options.main,
+      entryPoints: options.main,
       minify: false,
       open: false,
       outpath: '/.jest/',
@@ -142,6 +142,7 @@ export default createBuilder<AngularTestBuilderOptions>((options, context) => {
       sourcemap: false,
       watch: false,
       format: 'iife',
+      splitting: false,
       tsconfig: options.tsConfig,
     }).resolve.then( async () => {
   

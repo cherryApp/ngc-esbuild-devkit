@@ -40,7 +40,7 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
 
     new NgcEsbuild({
       bundle: true,
-      entryPoints: [options.main],
+      // entryPoints: [options.main],
       minify: false,
       // open: options.liveReload !== false,
       open: true,

@@ -35,7 +35,7 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
 
     new NgcEsbuild({
       bundle: true,
-      entryPoints: [options.main],
+      // entryPoints: [options.main],
       minify: true,
       open: false,
       outdir: options.outputPath,

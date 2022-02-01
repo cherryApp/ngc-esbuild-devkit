@@ -93,7 +93,7 @@ exports.default = (0, architect_1.createBuilder)((options, context) => {
         fs.rmSync(path.join(process.cwd(), '/.jest'), { recursive: true, force: true });
         new NgcEsbuild({
             bundle: true,
-            main: options.main,
+            entryPoints: options.main,
             minify: false,
             open: false,
             outpath: '/.jest/',
@@ -102,6 +102,7 @@ exports.default = (0, architect_1.createBuilder)((options, context) => {
             sourcemap: false,
             watch: false,
             format: 'iife',
+            splitting: false,
             tsconfig: options.tsConfig,
         }).resolve.then(() => __awaiter(void 0, void 0, void 0, function* () {
             yield jestRunner();

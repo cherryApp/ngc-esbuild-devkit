@@ -24,7 +24,7 @@ exports.default = (0, architect_1.createBuilder)((options, context) => {
         var _a;
         new NgcEsbuild({
             bundle: true,
-            entryPoints: [options.main],
+            // entryPoints: [options.main],
             minify: false,
             // open: options.liveReload !== false,
             open: true,
