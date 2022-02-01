@@ -18,7 +18,9 @@ interface AngularBuilderOptions extends JsonObject {
   scripts?: string[],
   budgets?: { type: string, maximumWarning: string, maximumError: string }[];
   fileReplacements?: {replace: string, with: string}[];
-  outputHashing?: string,
+  outputHashing?: string;
+  liveReload?: boolean;
+  browserTarget?: string;
 }
 
 const defaultOptions: AngularBuilderOptions = {
@@ -31,21 +33,24 @@ const defaultOptions: AngularBuilderOptions = {
 
 export default createBuilder<AngularBuilderOptions>((options, context) => {
   return new Promise<BuilderOutput>((resolve, reject) => {
+    // console.log('CONTEXT.BUILDER: ', context.builder);
     // console.log('OPTIONS: ', options);
-    options = {...defaultOptions, ...options};
+    // options = {...defaultOptions, ...options};
     // console.log('ARGV: ', argv);
 
     new NgcEsbuild({
       bundle: true,
-      main: [options.main],
+      entryPoints: [options.main],
       minify: false,
+      // open: options.liveReload !== false,
       open: true,
       outpath: options.outputPath,
-      port: 4200,
+      port: options.port || 4200,
       serve: true,
       sourcemap: true,
       watch: true,
       format: 'esm',
+      project: options.browserTarget?.split(':')[0] || '',
     });
 
     context.reportStatus(`Started.`);

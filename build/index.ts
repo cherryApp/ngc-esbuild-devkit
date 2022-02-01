@@ -31,14 +31,14 @@ const defaultOptions: AngularBuilderOptions = {
 
 export default createBuilder<AngularBuilderOptions>((options, context) => {
   return new Promise<BuilderOutput>((resolve, reject) => {
-    options = {...defaultOptions, ...options};
+    // options = {...defaultOptions, ...options};
 
     new NgcEsbuild({
       bundle: true,
-      main: [options.main],
+      entryPoints: [options.main],
       minify: true,
       open: false,
-      outpath: options.outputPath,
+      outdir: options.outputPath,
       port: 4200,
       serve: false,
       sourcemap: false,

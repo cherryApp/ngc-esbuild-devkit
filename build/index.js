@@ -17,13 +17,13 @@ const defaultOptions = {
 };
 exports.default = (0, architect_1.createBuilder)((options, context) => {
     return new Promise((resolve, reject) => {
-        options = Object.assign(Object.assign({}, defaultOptions), options);
+        // options = {...defaultOptions, ...options};
         new NgcEsbuild({
             bundle: true,
-            main: [options.main],
+            entryPoints: [options.main],
             minify: true,
             open: false,
-            outpath: options.outputPath,
+            outdir: options.outputPath,
             port: 4200,
             serve: false,
             sourcemap: false,

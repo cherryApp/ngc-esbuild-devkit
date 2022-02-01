@@ -17,20 +17,24 @@ const defaultOptions = {
 };
 exports.default = (0, architect_1.createBuilder)((options, context) => {
     return new Promise((resolve, reject) => {
+        // console.log('CONTEXT.BUILDER: ', context.builder);
         // console.log('OPTIONS: ', options);
-        options = Object.assign(Object.assign({}, defaultOptions), options);
+        // options = {...defaultOptions, ...options};
         // console.log('ARGV: ', argv);
+        var _a;
         new NgcEsbuild({
             bundle: true,
-            main: [options.main],
+            entryPoints: [options.main],
             minify: false,
+            // open: options.liveReload !== false,
             open: true,
             outpath: options.outputPath,
-            port: 4200,
+            port: options.port || 4200,
             serve: true,
             sourcemap: true,
             watch: true,
             format: 'esm',
+            project: ((_a = options.browserTarget) === null || _a === void 0 ? void 0 : _a.split(':')[0]) || '',
         });
         context.reportStatus(`Started.`);
     });

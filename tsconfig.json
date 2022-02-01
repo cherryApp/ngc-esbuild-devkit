@@ -15,7 +15,7 @@
     "skipLibCheck": false,
     "sourceMap": false,
     "strictNullChecks": true,
-    "types": ["node", "jasmine"],
+    "types": ["node"],
     "preserveSymlinks": true,
     "esModuleInterop": true,
   }
