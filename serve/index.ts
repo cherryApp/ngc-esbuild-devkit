@@ -2,6 +2,7 @@ import { BuilderContext, BuilderOutput, createBuilder } from '@angular-devkit/ar
 import { JsonObject } from '@angular-devkit/core';
 import yargs from 'yargs/yargs';
 import helpers from 'yargs/helpers';
+import { getAngularOptions } from '../utils/fileHandler';
 const argv = yargs(helpers.hideBin(process.argv)).argv;
 const NgcEsbuild = require('ngc-esbuild');
 
@@ -32,15 +33,18 @@ const defaultOptions: AngularBuilderOptions = {
 };
 
 export default createBuilder<AngularBuilderOptions>((options, context) => {
-  return new Promise<BuilderOutput>((resolve, reject) => {
-    // console.log('CONTEXT.BUILDER: ', context.builder);
-    // console.log('OPTIONS: ', options);
-    // options = {...defaultOptions, ...options};
-    // console.log('ARGV: ', argv);
+  return new Promise<BuilderOutput>( async (resolve, reject) => {
+    const angularOptions = await getAngularOptions();
+    const project = options.browserTarget?.split(':')[0]
+        || Object.keys(angularOptions.projects)[0];
+    const mode = options.browserTarget?.split(':')[1] || 'build' 
+    const entryPoints = [
+      angularOptions.projects[project].architect[mode].options.main
+    ];
 
     new NgcEsbuild({
       bundle: true,
-      // entryPoints: [options.main],
+      entryPoints,
       minify: false,
       // open: options.liveReload !== false,
       open: true,
@@ -50,7 +54,8 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
       sourcemap: true,
       watch: true,
       format: 'esm',
-      project: options.browserTarget?.split(':')[0] || '',
+      project,
+      mode,
     });
 
     context.reportStatus(`Started.`);
