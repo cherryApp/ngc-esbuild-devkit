@@ -1,6 +1,6 @@
 {
   "name": "ngc-esbuild-devkit",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "",
   "main": "browser/index.js",
   "builders": "builders.json",
