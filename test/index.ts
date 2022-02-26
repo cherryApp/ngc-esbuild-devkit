@@ -136,7 +136,7 @@ export default createBuilder<AngularTestBuilderOptions>((options, context) => {
       entryPoints: options.main,
       minify: false,
       open: false,
-      outpath: '/.jest/',
+      outpath: '.jest/',
       port: 4200,
       serve: false,
       sourcemap: false,

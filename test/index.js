@@ -96,7 +96,7 @@ exports.default = (0, architect_1.createBuilder)((options, context) => {
             entryPoints: options.main,
             minify: false,
             open: false,
-            outpath: '/.jest/',
+            outpath: '.jest/',
             port: 4200,
             serve: false,
             sourcemap: false,
