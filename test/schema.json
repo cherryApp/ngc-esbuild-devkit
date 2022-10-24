@@ -181,6 +181,10 @@
     "webWorkerTsConfig": {
       "type": "string",
       "description": "TypeScript configuration for Web Worker modules."
+    },
+    "certDir": {
+      "type": "string",
+      "description": "Directory of the ssl certificate files."
     }
   },
   "additionalProperties": false,
