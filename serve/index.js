@@ -24,6 +24,7 @@ const defaultOptions = {
     index: "src/index.html",
     tsConfig: "tsconfig.app.json",
     inlineStyleLanguage: "scss",
+    certDir: "",
 };
 exports.default = (0, architect_1.createBuilder)((options, context) => {
     return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
@@ -49,6 +50,7 @@ exports.default = (0, architect_1.createBuilder)((options, context) => {
             format: 'esm',
             project,
             mode,
+            certDir: options.certDir,
         });
         context.reportStatus(`Started.`);
     }));

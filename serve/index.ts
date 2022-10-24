@@ -22,6 +22,7 @@ interface AngularBuilderOptions extends JsonObject {
   outputHashing?: string;
   liveReload?: boolean;
   browserTarget?: string;
+  certDir?: string;
 }
 
 const defaultOptions: AngularBuilderOptions = {
@@ -30,6 +31,7 @@ const defaultOptions: AngularBuilderOptions = {
   index: "src/index.html",
   tsConfig: "tsconfig.app.json",
   inlineStyleLanguage: "scss",
+  certDir: "",
 };
 
 export default createBuilder<AngularBuilderOptions>((options, context) => {
@@ -56,6 +58,7 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
       format: 'esm',
       project,
       mode,
+      certDir: options.certDir,
     });
 
     context.reportStatus(`Started.`);
