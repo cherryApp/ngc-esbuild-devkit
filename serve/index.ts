@@ -44,6 +44,8 @@ export default createBuilder<AngularBuilderOptions>((options, context) => {
       angularOptions.projects[project].architect[mode].options.main
     ];
 
+    console.log('OPTIONS:', options);
+
     new NgcEsbuild({
       bundle: true,
       entryPoints,
